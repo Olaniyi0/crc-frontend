@@ -64,4 +64,4 @@ jobs:
       - name: purge CDN
         run: |
           az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET --tenant $TENANT_ID
-          az cdn endpoint purg -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"
+          az cdn endpoint purge -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"

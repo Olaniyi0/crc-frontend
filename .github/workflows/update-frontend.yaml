@@ -36,6 +36,10 @@ jobs:
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
         run: terraform fmt -check
+        
+      # Tear down web files
+      - name: Terraform Destroy
+        run: terraform destroy -target=azurerm_storage_blob.web-files
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan

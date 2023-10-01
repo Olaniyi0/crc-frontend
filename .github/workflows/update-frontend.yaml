@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: testing
-        run: echo "This part is working"
-        run: echo ${{ secrets.ARM_CLIENT_ID }}
+        run: |
+          echo "This part is working"
+          echo ${{ secrets.ARM_CLIENT_ID }}
         shell: bash
 
 # name: hello world yaml

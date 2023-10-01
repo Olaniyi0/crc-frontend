@@ -5,7 +5,7 @@ resource "azurerm_storage_account" "resume-storage-account" {
   location                 = var.rg-location
   account_tier             = "Standard"
   account_replication_type = "GRS"
-  tags = local.common-tags
+  tags                     = local.common-tags
 
   static_website {
     index_document     = "index.html"
@@ -21,6 +21,6 @@ resource "azurerm_storage_blob" "web-files" {
   storage_container_name = "$web"
   type                   = "Block"
   source                 = "./web-files/${each.key}"
-  content_type = regex("\\.(.+)$", each.key)[0]
+  content_type           = regex("\\.(.+)$", each.key)[0]
 
 }

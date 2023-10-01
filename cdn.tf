@@ -4,12 +4,12 @@ resource "azurerm_cdn_profile" "resume-cdn-profile" {
   resource_group_name = var.rg-name
   location            = var.rg-location
   sku                 = "Standard_Microsoft"
-  tags = local.common-tags
+  tags                = local.common-tags
 }
 
 resource "azurerm_cdn_endpoint" "resume-cdn-endpoint" {
   depends_on          = [azurerm_cdn_profile.resume-cdn-profile]
-  name                = "${local.storage-account-name}"
+  name                = local.storage-account-name
   profile_name        = azurerm_cdn_profile.resume-cdn-profile.name
   location            = var.rg-location
   resource_group_name = var.rg-name

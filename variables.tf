@@ -10,10 +10,10 @@ variable "rg-location" {
 
 variable "storage-account-name" {
   description = "Storage account name, it must be unique across Azure"
-  default = "monster"
+  default     = "monster"
 }
 
 variable "dns-cname-record" {
   description = "cname recod e.g www, web, mobile"
-  default = "test"
+  default     = "test"
 }

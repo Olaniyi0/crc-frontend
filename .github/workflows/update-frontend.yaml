@@ -1,40 +1,40 @@
-# name: Update resume page 
-
-# on:
-#  push:
-#   branches:
-#     - main
-
-# job:
-#   update-resources:
-#     runs-on: ubunutu-latest
-#     steps:
-#       run: echo "This part is working"
-#       shell: bash
-
-name: hello world yaml
+name: Update resume page 
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+ push:
+  branches:
+    - main
 
 jobs:
-  hello:
-    runs-on: ubuntu-latest
+  update-resources:
+    runs-on: ubunutu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: hello_world
-        run: echo "Hello world"
-        shell: bash
+      run: echo "This part is working"
+      shell: bash
 
-  goodbye: 
-    runs-on: ubuntu-latest
-    steps:
-      - name: goodbye 
-        run: echo "Goodbye"
-        shell: bash
+# name: hello world yaml
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   # pull_request:
+#   #   branches:
+#   #     - main
+#   # workflow_dispatch:
+
+# jobs:
+#   hello:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: hello_world
+#         run: echo "Hello world"
+#         shell: bash
+
+#   goodbye: 
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: goodbye 
+#         run: echo "Goodbye"
+#         shell: bash

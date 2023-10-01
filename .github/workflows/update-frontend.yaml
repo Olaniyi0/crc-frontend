@@ -1,0 +1,13 @@
+name: Update resume page 
+
+on:
+ push:
+  branches:
+    - main
+
+job:
+  update-resources:
+    runs-on: ubunutu-latest
+    steps:
+      run: echo "This part is working"
+      shell: bash

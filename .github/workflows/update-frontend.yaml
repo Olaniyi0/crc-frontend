@@ -47,5 +47,21 @@ jobs:
         if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
 
+  # Job to purge the CDN endpoint
+  purge-cdn:
+    needs: update-resources
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
 
-        
+    env: 
+      CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      - name: purge CDN
+        run: |
+          az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET --tenant $TENANT_ID
+          az cdn endpoint purg -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"

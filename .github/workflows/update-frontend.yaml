@@ -54,13 +54,11 @@ jobs:
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply if web files was modified
-        #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
         if: steps.changed-files.outputs.any_changed == 'true'
         run: terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false
       
       # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply if web files was not modified
-        #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
         if: steps.changed-files.outputs.any_changed == 'false'
         run: terraform apply -auto-approve -input=false
 

@@ -58,26 +58,32 @@ jobs:
       #   run: terraform plan -input=false
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-      - name: Terraform Apply
+      - name: Terraform Apply if web files was modified
         #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false
+      
+      # On push to "main", build or change infrastructure according to Terraform configuration files
+      - name: Terraform Apply if web files was not modified
+        #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        if: steps.changed-files.outputs.any_changed == 'false'
         run: terraform apply -auto-approve -input=false
 
   # Job to purge the CDN endpoint
-  purge-cdn:
-    needs: update-resources
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
+  # purge-cdn:
+  #   needs: update-resources
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       shell: bash
 
-    env: 
-      CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  #   env: 
+  #     CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  #     CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-    steps:
-      - name: purge CDN
-        run: |
-          az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET --tenant $TENANT_ID
-          az cdn endpoint purge -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"
+  #   steps:
+  #     - name: purge CDN
+  #       run: |
+  #         az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET --tenant $TENANT_ID
+  #         az cdn endpoint purge -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"

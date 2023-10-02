@@ -27,22 +27,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Check for modified files
-      # - name: Check for modified files
-      #   id: check-changes
-      #   run: |
-      #     modified_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '/web-files/')
-      #     echo "::set-output name=modified_files::$modified_files"
+      # Install changed-files action
+      - name: Check for modified web files
+        id: changed-files
+        uses: tj-actions/changed-files@v39
 
-      # - name: Display modified files
-      #   run: |
-      #     echo "Modified files: ${{ steps.check-changes.outputs.modified_files }}"
-
-      # - name: Perform action if files modified
-      #   if: ${{ steps.check-changes.outputs.modified_files != '' }}
-      #   run: |
-      #     # Your action here
-      #     echo "Performing action because files were modified"
+      # List changes
+      - name: Check if folder was modified
+        if: contains(steps.changed-files.outputs.all_changed_files, '/web-files/')
+        run: echo "Folder was modified"
 
       # Install the latest version of Terraform CLI 
       - name: Set up Terraform

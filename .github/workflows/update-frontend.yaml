@@ -58,6 +58,7 @@ jobs:
         run: |
           export MY_BUILD_ENV_VAR=my-build-value
           echo ${{ env.MY_BUILD_ENV_VAR }}
+          echo $MY_BUILD_ENV_VAR
         # export ec="$(terraform output rg-name)"
         # echo ${{ env.ec }}
         # terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false

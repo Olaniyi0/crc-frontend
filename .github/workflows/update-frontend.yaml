@@ -50,7 +50,7 @@ jobs:
       - name: Terraform Format
         run: |
           terraform fmt -check
-          echo $(terraform output rg-name)
+          echo $(terraform output rg-name | sed 's/"//g')
 
 
       # Generates an execution plan for Terraform

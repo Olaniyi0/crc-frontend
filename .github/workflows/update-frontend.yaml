@@ -62,8 +62,8 @@ jobs:
           echo $(terraform output storage-name)
           echo $(terraform output cdn-profile-name)
           az cdn endpoint purge -g "$(terraform output rg-name)" \
-                                -n $(terraform output storage-name) \
-                                --profile-name $(terraform output cdn-profile-name) --content-paths "/*"
+                                -n "$(terraform output storage-name)" \
+                                --profile-name "$(terraform output cdn-profile-name)" --content-paths "/*"
       
       # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply if web files was not modified

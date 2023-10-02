@@ -39,6 +39,8 @@ jobs:
       # Install the latest version of Terraform CLI 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2 
+        with:
+          terraform_wrapper: false
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
@@ -56,7 +58,7 @@ jobs:
       - name: Terraform Apply if web files was modified
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          export MY_BUILD_ENV_VAR=$(terraform output rg-name | awk '{print $1}')
+          export MY_BUILD_ENV_VAR=$(terraform output rg-name)
           echo $MY_BUILD_ENV_VAR
       
         # export ec="$(terraform output rg-name)"

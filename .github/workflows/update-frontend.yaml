@@ -56,10 +56,12 @@ jobs:
       - name: Terraform Apply if web files was modified
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false
-          az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
-          ec="$(terraform output rg-name)"
-          echo ${{env.ec}}
+          export ec="$(terraform output rg-name)"
+          echo ${{ env.ec }}
+        # terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false
+        # az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+        # ec="$(terraform output rg-name)"
+        # echo ${{env.ec}}
         # az cdn endpoint purge -g "$(terraform output rg-name)" \
         #                       -n "$(terraform output storage-name)" \
         #                       --profile-name "$(terraform output cdn-profile-name)" --content-paths "/*"

@@ -51,7 +51,7 @@ jobs:
       # Taint web files if it was modified
       - name: Taint web files if modified
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: terraform taint azurerm_storage_blob.web-files -auto-approve 
+        run: terraform taint azurerm_storage_blob.web-files
 
       # Generates an execution plan for Terraform
       # - name: Terraform Plan

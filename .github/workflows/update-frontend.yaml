@@ -48,10 +48,10 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
 
-      # Tear down web files if modified
-      - name: Destroy web files if modified
+      # Taint web files if it was modified
+      - name: Taint web files if modified
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: terraform destroy -target=azurerm_storage_blob.web-files -auto-approve 
+        run: terraform taint azurerm_storage_blob.web-files -auto-approve 
 
       # Generates an execution plan for Terraform
       # - name: Terraform Plan

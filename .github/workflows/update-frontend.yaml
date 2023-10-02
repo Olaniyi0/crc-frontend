@@ -62,7 +62,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'false'
         run: terraform apply -auto-approve -input=false
 
-  Job to purge the CDN endpoint
+  # Job to purge the CDN endpoint
   purge-cdn:
     needs: update-resources
     runs-on: ubuntu-latest

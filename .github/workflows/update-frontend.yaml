@@ -56,7 +56,7 @@ jobs:
       - name: Terraform Apply if web files was modified
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          export MY_BUILD_ENV_VAR="$(terraform output rg-name)"
+          export MY_BUILD_ENV_VAR="$(terraform output rg-name)" | awk '{print $NF}')
           echo $MY_BUILD_ENV_VAR
       
         # export ec="$(terraform output rg-name)"

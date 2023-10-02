@@ -36,11 +36,6 @@ jobs:
         with:
           files: web-files
 
-      # List changes
-      - name: Check if folder was modified
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: echo "Folder was modified"
-
       # Install the latest version of Terraform CLI 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2 
@@ -53,8 +48,9 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
 
-      # Tear down web files test
-      - name: Terraform Destroy
+      # Tear down web files if modified
+      - name: Destroy web files if modified
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: terraform destroy -target=azurerm_storage_blob.web-files -auto-approve 
 
       # Generates an execution plan for Terraform

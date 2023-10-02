@@ -57,11 +57,8 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false
-          export rg_name=$(terraform output rg-name)
-          export storage_name=$(terraform output storage-name)
-          export profile_name=$(terraform output cdn-profile-name)
           az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
-          az cdn endpoint purge -g $rg_name -n $storage_name --profile-name $profile_name --content-paths "/*"
+          az cdn endpoint purge -g $(terraform output rg-name) -n $(terraform output storage-name) --profile-name $(terraform output cdn-profile-name) --content-paths "/*"
       
       # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply if web files was not modified

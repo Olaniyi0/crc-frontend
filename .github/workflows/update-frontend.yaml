@@ -55,28 +55,14 @@ jobs:
       # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply if web files was modified
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false
+        run: |
+          terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false
+          az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+          az cdn endpoint purge -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"
       
       # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply if web files was not modified
         if: steps.changed-files.outputs.any_changed == 'false'
         run: terraform apply -auto-approve -input=false
 
-  # Job to purge the CDN endpoint
-  purge-cdn:
-    needs: update-resources
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-
-    env: 
-      CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-
-    steps:
-      - name: purge CDN
-        run: |
-          az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET --tenant $TENANT_ID
-          az cdn endpoint purge -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"
+ 

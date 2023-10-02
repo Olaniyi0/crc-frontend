@@ -31,7 +31,7 @@ jobs:
       - name: Check for modified files
         id: check-changes
         run: |
-          modified_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '/web-files/index.html')
+          modified_files=$(git diff --name-only HEAD^ HEAD | grep '/web-files/')
           echo "::set-output name=modified_files::$modified_files"
 
       - name: Display modified files

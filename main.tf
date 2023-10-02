@@ -12,10 +12,10 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name = "spiral-rg"
+    resource_group_name  = "spiral-rg"
     storage_account_name = "spiral"
-    container_name = "terraform-state"
-    key = "terraform.tfstate"
+    container_name       = "terraform-state"
+    key                  = "terraform.tfstate"
   }
 }
 

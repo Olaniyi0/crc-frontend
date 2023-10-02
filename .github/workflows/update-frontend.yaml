@@ -48,11 +48,6 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
 
-      # Taint web files if it was modified
-      - name: Taint web files if modified
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: terraform taint 'azurerm_storage_blob.web-files["index.html"]'
-
       # Generates an execution plan for Terraform
       # - name: Terraform Plan
       #   run: terraform plan -input=false
@@ -69,21 +64,21 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'false'
         run: terraform apply -auto-approve -input=false
 
-  # Job to purge the CDN endpoint
-  # purge-cdn:
-  #   needs: update-resources
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       shell: bash
+  Job to purge the CDN endpoint
+  purge-cdn:
+    needs: update-resources
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
 
-  #   env: 
-  #     CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  #     CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #     TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+    env: 
+      CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-  #   steps:
-  #     - name: purge CDN
-  #       run: |
-  #         az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET --tenant $TENANT_ID
-  #         az cdn endpoint purge -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"
+    steps:
+      - name: purge CDN
+        run: |
+          az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET --tenant $TENANT_ID
+          az cdn endpoint purge -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"

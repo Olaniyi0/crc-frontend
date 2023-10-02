@@ -56,6 +56,9 @@ jobs:
       - name: Terraform Apply if web files was modified
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
           terraform apply -replace='azurerm_storage_blob.web-files["index.html"]' -auto-approve -input=false
           az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
           az cdn endpoint purge -g crc-frontend -n monsterstorage --profile-name monsterstorage-cdn-profile --content-paths "/*"

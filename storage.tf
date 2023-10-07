@@ -30,7 +30,7 @@ resource "null_resource" "web-blob" {
   provisioner "local-exec" {
     command     = <<-EOT
       #!/bin/bash
-      az storage blob upload-batch --account-name "${local.storage-account-name}" --destination '$web' --source ./web_files/ 
+      az storage blob upload-batch --account-name "${local.storage-account-name}" --destination '$web' --source /web-files/ 
     EOT
     interpreter = ["bash", "-c"]
   }

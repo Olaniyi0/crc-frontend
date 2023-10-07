@@ -13,14 +13,25 @@ resource "azurerm_storage_account" "resume-storage-account" {
   }
 }
 
-resource "azurerm_storage_blob" "web-files" {
-  depends_on             = [azurerm_storage_account.resume-storage-account]
-  for_each               = toset(fileset("${path.module}/web-files", "*"))
-  name                   = each.key
-  storage_account_name   = local.storage-account-name
-  storage_container_name = "$web"
-  type                   = "Block"
-  source                 = "./web-files/${each.key}"
-  content_type           = regex("\\.(.+)$", each.key)[0]
+# resource "azurerm_storage_blob" "web-files" {
+#   depends_on             = [azurerm_storage_account.resume-storage-account]
+#   for_each               = toset(fileset("${path.module}/web-files", "*"))
+#   name                   = each.key
+#   storage_account_name   = local.storage-account-name
+#   storage_container_name = "$web"
+#   type                   = "Block"
+#   source                 = "./web-files/${each.key}"
+#   content_type           = regex("\\.(.+)$", each.key)[0]
 
+# }
+
+resource "null_resource" "web-blob" {
+  depends_on = [azurerm_storage_account.resume-storage-account]
+  provisioner "local-exec" {
+    command     = <<-EOT
+      #!/bin/bash
+      az storage blob upload-batch --account-name "${local.storage-account-name}" --destination '$web' --source ./web_files/ 
+    EOT
+    interpreter = ["bash", "-c"]
+  }
 }

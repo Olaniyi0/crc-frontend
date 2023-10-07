@@ -13,6 +13,7 @@ resource "azurerm_storage_account" "resume-storage-account" {
   }
 }
 
+# having issue with content type
 # resource "azurerm_storage_blob" "web-files" {
 #   depends_on             = [azurerm_storage_account.resume-storage-account]
 #   for_each               = toset(fileset("${path.module}/web-files", "*"))

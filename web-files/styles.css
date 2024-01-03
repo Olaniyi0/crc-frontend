@@ -1,9 +1,32 @@
 body {
-    background-color: #000000;
-    font-family: 'Waiting for the Sunrise', cursive;
-    color: #ffff;
+    background-color: #2B2A2F;
+    font-family: 'Anton', sans-serif;
+    font-family: 'Gabarito', sans-serif;
+    /* font-family: 'Waiting for the Sunrise', cursive; */
+    color: #DDE6ED;
     margin: 20px 50px 20px 50px;
+    background-image: url(./background-img.jpg);
 }
 .ul {
    background-color: none; 
+}
+
+#me {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: larger; 
+}
+
+.about {
+    margin: 5px 0px 5px 0px;
+}
+
+.role {
+    color: #27374D;
+}
+
+#you {
+    /* background-color: #d80000; */
 }

@@ -22,12 +22,12 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint" {
 }
 
 data "azurerm_dns_zone" "myresumes" {
-  name                = "myresumes.live"
-  resource_group_name = "cloud-resume-challenge"
+  name                = "cloudresume.me"
+  resource_group_name = "dns-rg"
 }
 
 resource "azurerm_dns_cname_record" "myresumes" {
-  name                = "test"
+  name                = "www"
   zone_name           = data.azurerm_dns_zone.myresumes.name
   resource_group_name = data.azurerm_dns_zone.myresumes.resource_group_name
   ttl                 = 5

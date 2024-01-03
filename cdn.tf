@@ -30,7 +30,7 @@ resource "azurerm_dns_cname_record" "myresumes" {
   name                = "www"
   zone_name           = data.azurerm_dns_zone.myresumes.name
   resource_group_name = data.azurerm_dns_zone.myresumes.resource_group_name
-  ttl                 = 5
+  ttl                 = 20
   record              = azurerm_cdn_endpoint.resume-cdn-endpoint.fqdn
 }
 

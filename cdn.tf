@@ -27,6 +27,7 @@ data "azurerm_dns_zone" "myresumes" {
 }
 
 resource "azurerm_dns_cname_record" "myresumes" {
+  depends_on = [ azurerm_cdn_endpoint.resume-cdn-endpoint ]
   name                = "www"
   zone_name           = data.azurerm_dns_zone.myresumes.name
   resource_group_name = data.azurerm_dns_zone.myresumes.resource_group_name

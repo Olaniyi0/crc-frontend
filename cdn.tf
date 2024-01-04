@@ -35,8 +35,14 @@ resource "azurerm_dns_cname_record" "myresumes" {
   record              = azurerm_cdn_endpoint.resume-cdn-endpoint.fqdn
 }
 
+resource "time_sleep" "wait_60_seconds" {
+  depends_on = [azurerm_dns_cname_record.myresumes]
+
+  create_duration = "60s"
+}
+
 resource "azurerm_cdn_endpoint_custom_domain" "myresumes" {
-  depends_on      = [azurerm_dns_cname_record.myresumes]
+  depends_on      = [time_sleep.wait_60_seconds]
   name            = "${local.storage-account-name}-custom-domain"
   cdn_endpoint_id = azurerm_cdn_endpoint.resume-cdn-endpoint.id
   host_name       = "${azurerm_dns_cname_record.myresumes.name}.${data.azurerm_dns_zone.myresumes.name}"
